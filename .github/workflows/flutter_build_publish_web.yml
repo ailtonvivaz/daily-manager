@@ -1,0 +1,35 @@
+name: Flutter Web
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: Build Web
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.0.3'
+          channel: 'stable'
+          cache: true
+          cache-key: flutter
+          cache-path: ${{ runner.tool_cache }}/flutter
+      
+      - run: flutter pub get
+      - run: flutter test
+      - run: flutter build web
+      
+      - run: |
+          cd build/web
+          git init
+          git config --global user.email ailtonvivaz@outlook.com
+          git config --global user.name Ailton Vieira
+          git status
+          git remote add origin https://${{secrets.commit_secret}}@github.com/dailymanager/daily-manager-flutter.git
+          git checkout -b gh-pages
+          git add --all
+          git commit -m "Atualiza versão web"
+          git push origin gh-pages -f
