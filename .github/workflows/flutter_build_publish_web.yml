@@ -20,7 +20,7 @@ jobs:
       
       - run: flutter pub get
       - run: flutter test
-      - run: flutter build web
+      - run: flutter build web --base-href /daily-manager
       
       - run: |
           cd build/web
