@@ -28,7 +28,7 @@ jobs:
           git config --global user.email ailtonvivaz@outlook.com
           git config --global user.name Ailton Vieira
           git status
-          git remote add origin https://${{secrets.commit_secret}}@github.com/dailymanager/daily-manager-flutter.git
+          git remote add origin https://${{secrets.token}}@github.com/ailtonvivaz/daily-manager-flutter.git
           git checkout -b gh-pages
           git add --all
           git commit -m "Atualiza versão web"
