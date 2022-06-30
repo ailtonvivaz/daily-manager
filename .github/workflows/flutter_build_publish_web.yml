@@ -19,7 +19,7 @@ jobs:
           cache-path: ${{ runner.tool_cache }}/flutter
 
       - run: flutter pub get
-      - run: flutter test
+      # - run: flutter test
       - run: flutter build web --release --base-href /daily-manager/
 
       - run: |
