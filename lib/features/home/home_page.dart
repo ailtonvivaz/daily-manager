@@ -6,8 +6,13 @@ import 'dart:html' as html;
 
 class HomePage extends StatefulWidget {
   final String? id;
+  final int? minutes;
 
-  const HomePage({super.key, this.id});
+  const HomePage({
+    super.key,
+    this.id,
+    this.minutes,
+  });
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -46,7 +51,7 @@ class _HomePageState extends State<HomePage> {
     html.window.history.pushState(
       '',
       '',
-      id.isEmpty ? '' : '?id=$id',
+      id.isEmpty ? '' : '?id=$id&minutes=$minutes',
     );
   }
 

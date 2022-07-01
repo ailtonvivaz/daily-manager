@@ -35,7 +35,12 @@ class MyApp extends StatelessWidget {
         path: '/',
         builder: (BuildContext context, GoRouterState state) {
           debugPrint(state.queryParams.toString());
-          return HomePage(id: state.queryParams['id']);
+          final id = state.queryParams['id'];
+          final minutes = int.tryParse(state.queryParams['minutes'] ?? '');
+          return HomePage(
+            id: id,
+            minutes: minutes,
+          );
         },
       ),
     ],
