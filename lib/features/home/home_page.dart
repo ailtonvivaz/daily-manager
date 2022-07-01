@@ -73,92 +73,97 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Gerenciador de Daily'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(24),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _controller,
-                      focusNode: _focusNode,
-                      decoration: const InputDecoration(
-                        labelText: 'Adicionar nome',
-                        hintText: 'Digite um nome e pressione Enter',
-                        border: OutlineInputBorder(),
+        child: Container(
+          constraints: const BoxConstraints(
+            maxWidth: 1200,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(24),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _controller,
+                        focusNode: _focusNode,
+                        decoration: const InputDecoration(
+                          labelText: 'Adicionar nome',
+                          hintText: 'Digite um nome e pressione Enter',
+                          border: OutlineInputBorder(),
+                        ),
+                        onSubmitted: _onPressAddName,
                       ),
-                      onSubmitted: _onPressAddName,
                     ),
+                    IconButton(
+                      icon: const Icon(Icons.sort_by_alpha),
+                      onPressed: _onPressOrderByAlpha,
+                    ),
+                  ],
+                ),
+              ),
+              Column(
+                children: [
+                  IconButton(
+                    onPressed: _onPressIncMinute,
+                    icon: const Icon(Icons.keyboard_arrow_up),
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        minutes.toString(),
+                        style: Theme.of(context).textTheme.displayLarge,
+                      ),
+                      const Text('minutos'),
+                    ],
                   ),
                   IconButton(
-                    icon: const Icon(Icons.sort_by_alpha),
-                    onPressed: _onPressOrderByAlpha,
+                    onPressed: _onPressDecMinute,
+                    icon: const Icon(Icons.keyboard_arrow_down),
                   ),
                 ],
               ),
-            ),
-            Column(
-              children: [
-                IconButton(
-                  onPressed: _onPressIncMinute,
-                  icon: const Icon(Icons.keyboard_arrow_up),
-                ),
-                Column(
-                  children: [
-                    Text(
-                      minutes.toString(),
-                      style: Theme.of(context).textTheme.displayLarge,
-                    ),
-                    const Text('minutos'),
-                  ],
-                ),
-                IconButton(
-                  onPressed: _onPressDecMinute,
-                  icon: const Icon(Icons.keyboard_arrow_down),
-                ),
-              ],
-            ),
-            Expanded(
-              child: GridView.builder(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
-                ),
-                shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 300,
-                  mainAxisExtent: 100,
-                  mainAxisSpacing: 12,
-                  crossAxisSpacing: 12,
-                ),
-                itemBuilder: (context, index) {
-                  return PeopleCard(
-                    name: people[index],
-                    activeEvents: true,
-                    onPressed: () {
-                      people.removeAt(index);
-                      setState(() {});
-                      encode();
-                    },
-                  );
-                },
-                itemCount: people.length,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(24),
-              child: ElevatedButton.icon(
-                onPressed: _onPressStartDaily,
-                icon: const Icon(Icons.play_arrow),
-                label: const Padding(
-                  padding: EdgeInsets.all(12),
-                  child: Text('Iniciar Daily'),
+              Expanded(
+                child: GridView.builder(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
+                  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 300,
+                    mainAxisExtent: 100,
+                    mainAxisSpacing: 12,
+                    crossAxisSpacing: 12,
+                  ),
+                  itemBuilder: (context, index) {
+                    return PeopleCard(
+                      name: people[index],
+                      activeEvents: true,
+                      onPressed: () {
+                        people.removeAt(index);
+                        setState(() {});
+                        encode();
+                      },
+                    );
+                  },
+                  itemCount: people.length,
                 ),
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.all(24),
+                child: ElevatedButton.icon(
+                  onPressed: _onPressStartDaily,
+                  icon: const Icon(Icons.play_arrow),
+                  label: const Padding(
+                    padding: EdgeInsets.all(12),
+                    child: Text('Iniciar Daily'),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
