@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 class PeopleCard extends StatefulWidget {
   final String name;
-  final void Function(bool hovered) onHover;
-  final void Function() onPressed;
+  final GestureTapCallback? onPressed;
+  final bool activeEvents;
 
   const PeopleCard({
     super.key,
     required this.name,
-    required this.onHover,
-    required this.onPressed,
+    this.onPressed,
+    this.activeEvents = false,
   });
 
   @override
@@ -21,6 +21,8 @@ class _PeopleCardState extends State<PeopleCard> {
 
   @override
   Widget build(BuildContext context) {
+    if (!widget.activeEvents) return _card();
+
     return MouseRegion(
       onEnter: (_) {
         debugPrint('onEnter');
@@ -38,28 +40,12 @@ class _PeopleCardState extends State<PeopleCard> {
         onTap: widget.onPressed,
         child: Stack(
           children: [
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: Text(
-                    widget.name,
-                    style: Theme.of(context).textTheme.subtitle1?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-            ),
+            _card(),
             if (hovered)
               Card(
                 color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
                 child: Container(
                   padding: const EdgeInsets.all(24),
-                  // decoration: BoxDecoration(
-                  //   color: Theme.of(context).colorScheme.primary,
-                  // ),
                   child: Center(
                     child: Icon(
                       Icons.delete,
@@ -67,8 +53,25 @@ class _PeopleCardState extends State<PeopleCard> {
                     ),
                   ),
                 ),
-              ),
+              )
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _card() {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Center(
+          child: Text(
+            widget.name,
+            style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+            textAlign: TextAlign.center,
+          ),
         ),
       ),
     );

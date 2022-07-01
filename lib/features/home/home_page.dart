@@ -4,6 +4,8 @@ import 'package:daily_manager/features/home/people_card.dart';
 import 'package:daily_manager/history/history.dart';
 import 'package:flutter/material.dart';
 
+import '../daily/daily_page.dart';
+
 class HomePage extends StatefulWidget {
   final String? id;
   final int? minutes;
@@ -133,34 +135,14 @@ class _HomePageState extends State<HomePage> {
                 ),
                 itemBuilder: (context, index) {
                   return PeopleCard(
-                      name: people[index],
-                      onHover: (hovered) {},
-                      onPressed: () {
-                        people.removeAt(index);
-                        setState(() {});
-                        encode();
-                      });
-                  // return Card(
-                  //   child: InkWell(
-                  //     onHover: (value) {
-                  //       debugPrint(value.toString());
-                  //     },
-                  //     onTap: () {},
-                  //     child: Padding(
-                  //       padding: const EdgeInsets.all(8.0),
-                  //       child: Center(
-                  //         child: Text(
-                  //           people[index],
-                  //           style:
-                  //               Theme.of(context).textTheme.subtitle1?.copyWith(
-                  //                     fontWeight: FontWeight.bold,
-                  //                   ),
-                  //           textAlign: TextAlign.center,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // );
+                    name: people[index],
+                    activeEvents: true,
+                    onPressed: () {
+                      people.removeAt(index);
+                      setState(() {});
+                      encode();
+                    },
+                  );
                 },
                 itemCount: people.length,
               ),
@@ -168,7 +150,7 @@ class _HomePageState extends State<HomePage> {
             Padding(
               padding: const EdgeInsets.all(24),
               child: ElevatedButton.icon(
-                onPressed: () {},
+                onPressed: _onPressStartDaily,
                 icon: const Icon(Icons.play_arrow),
                 label: const Padding(
                   padding: EdgeInsets.all(12),
@@ -187,6 +169,8 @@ class _HomePageState extends State<HomePage> {
     if (name.isEmpty) return;
 
     _controller.clear();
+
+    if (people.contains(name)) return;
 
     people.insert(0, name);
     setState(() {});
@@ -215,5 +199,18 @@ class _HomePageState extends State<HomePage> {
       minutes--;
     });
     encode();
+  }
+
+  void _onPressStartDaily() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DailyPage(
+          people: people,
+          minutes: minutes,
+        ),
+        fullscreenDialog: true,
+      ),
+    );
   }
 }
