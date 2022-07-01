@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:daily_manager/features/home/people_card.dart';
+import 'package:daily_manager/history/history.dart';
 import 'package:flutter/material.dart';
-import 'dart:html' as html;
 
 class HomePage extends StatefulWidget {
   final String? id;
@@ -48,11 +48,7 @@ class _HomePageState extends State<HomePage> {
 
   void updatePath(String id) {
     debugPrint('updatePath: $id');
-    html.window.history.pushState(
-      '',
-      '',
-      id.isEmpty ? '' : '?id=$id&minutes=$minutes',
-    );
+    History().pushState(id.isEmpty ? '' : '?id=$id&minutes=$minutes');
   }
 
   void decode() {

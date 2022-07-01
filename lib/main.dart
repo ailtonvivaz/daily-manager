@@ -1,10 +1,11 @@
 import 'package:daily_manager/features/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+
+import 'url_strategy/url_strategy.dart';
 
 void main() {
-  setUrlStrategy(PathUrlStrategy());
+  usePathUrlStrategy();
 
   runApp(MyApp());
 }
