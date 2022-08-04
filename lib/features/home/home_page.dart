@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:daily_manager/features/home/people_card.dart';
 import 'package:daily_manager/history/history.dart';
@@ -64,6 +65,16 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       people = decoded.split('\n');
     });
+  }
+
+  String get presenter {
+    DateTime now = DateTime.now();
+    final date = DateTime(now.year, now.month, now.day);
+
+    final random = Random(date.millisecondsSinceEpoch);
+    final index = random.nextInt(people.length);
+
+    return people[index];
   }
 
   @override
@@ -151,16 +162,30 @@ class _HomePageState extends State<HomePage> {
                   itemCount: people.length,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(24),
-                child: ElevatedButton.icon(
-                  onPressed: _onPressStartDaily,
-                  icon: const Icon(Icons.play_arrow),
-                  label: const Padding(
-                    padding: EdgeInsets.all(12),
-                    child: Text('Iniciar Daily'),
+              Column(
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Apresentador do dia',
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                      Text(presenter),
+                    ],
                   ),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: ElevatedButton.icon(
+                      onPressed: _onPressStartDaily,
+                      icon: const Icon(Icons.play_arrow),
+                      label: const Padding(
+                        padding: EdgeInsets.all(12),
+                        child: Text('Iniciar Daily'),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
