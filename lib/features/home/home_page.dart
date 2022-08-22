@@ -67,14 +67,13 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  String get presenter {
+  int get indexPresenter {
     DateTime now = DateTime.now();
     final date = DateTime(now.year, now.month, now.day);
 
     final random = Random(date.millisecondsSinceEpoch);
     final index = random.nextInt(people.length);
-
-    return people[index];
+    return index;
   }
 
   @override
@@ -114,27 +113,6 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              Column(
-                children: [
-                  IconButton(
-                    onPressed: _onPressIncMinute,
-                    icon: const Icon(Icons.keyboard_arrow_up),
-                  ),
-                  Column(
-                    children: [
-                      Text(
-                        minutes.toString(),
-                        style: Theme.of(context).textTheme.displayLarge,
-                      ),
-                      const Text('minutos'),
-                    ],
-                  ),
-                  IconButton(
-                    onPressed: _onPressDecMinute,
-                    icon: const Icon(Icons.keyboard_arrow_down),
-                  ),
-                ],
-              ),
               Expanded(
                 child: GridView.builder(
                   padding: const EdgeInsets.symmetric(
@@ -151,6 +129,7 @@ class _HomePageState extends State<HomePage> {
                   itemBuilder: (context, index) {
                     return PeopleCard(
                       name: people[index],
+                      presenter: index == indexPresenter,
                       activeEvents: true,
                       onPressed: () {
                         people.removeAt(index);
@@ -164,14 +143,27 @@ class _HomePageState extends State<HomePage> {
               ),
               Column(
                 children: [
-                  Column(
+                  const SizedBox(height: 24),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        'Apresentador do dia',
-                        style: Theme.of(context).textTheme.titleSmall,
+                      IconButton(
+                        onPressed: _onPressDecMinute,
+                        icon: const Icon(Icons.keyboard_arrow_left),
                       ),
-                      Text(presenter),
+                      Column(
+                        children: [
+                          Text(
+                            minutes.toString(),
+                            style: Theme.of(context).textTheme.displayMedium,
+                          ),
+                          const Text('minutos'),
+                        ],
+                      ),
+                      IconButton(
+                        onPressed: _onPressIncMinute,
+                        icon: const Icon(Icons.keyboard_arrow_right),
+                      ),
                     ],
                   ),
                   Padding(
