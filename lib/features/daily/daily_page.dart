@@ -84,6 +84,15 @@ class _DailyPageState extends State<DailyPage>
                 listenable: _controller,
               ),
               const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: _onPressPauseTimer,
+                child: const Text('Pause Timer'),
+              ),
+              const SizedBox(height: 12),
+              ElevatedButton(
+                onPressed: _onPressResumeTimer,
+                child: const Text('Resume Timer'),
+              ),              
               finished ? _finished() : _inProgress(),
             ],
           ),
@@ -92,104 +101,13 @@ class _DailyPageState extends State<DailyPage>
     );
   }
 
-  Widget _inProgress() {
-    if (emptyPeople) {
-      return ElevatedButton(
-        onPressed: _onPressFinish,
-        child: const Text('Finalizar'),
-      );
-    }
-
-    return Column(
-      children: [
-        SizedBox(
-          width: 300,
-          height: 100,
-          child: PeopleCard(name: currentPerson),
-        ),
-        const SizedBox(height: 24),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextButton(
-              onPressed: _onPressAbsent,
-              child: const Text('Ausente'),
-            ),
-            const SizedBox(width: 24),
-            ElevatedButton(
-              onPressed: _onPressPresented,
-              child: const Text('Apresentado'),
-            )
-          ],
-        )
-      ],
-    );
+  // Rest of code...
+  
+  void _onPressPauseTimer() {
+    _controller.stop();
   }
-
-  Widget _finished() {
-    final title = absentPeople.isEmpty
-        ? 'Todos os participantes apresentaram'
-        : 'Alguns participantes estão ausentes';
-    return Column(
-      children: [
-        Text(title),
-        const SizedBox(height: 24),
-        if (absentPeople.isNotEmpty) ...[
-          ...absentPeople.map(
-            (person) => Text(
-              person,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-          ),
-          const SizedBox(height: 24),
-        ],
-        ElevatedButton(
-          onPressed: _onPressFinish,
-          child: const Text('Finalizar'),
-        ),
-      ],
-    );
-  }
-
-  void _onPressPresented() {
-    presentPeople.add(currentPerson);
-    _nextPerson();
-  }
-
-  void _onPressAbsent() {
-    absentPeople.add(currentPerson);
-    _nextPerson();
-  }
-
-  void _onPressFinish() {
-    Navigator.pop(context);
-  }
-
-  Future<bool> _onWillPop() async {
-    return await showDialog<bool>(
-          context: context,
-          builder: (context) => AlertDialog(
-            // contentPadding: const EdgeInsets.all(0),
-            title: const Text('Deseja mesmo fechar?'),
-            content: const Text('Você encerrará o daily.'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: const Text('Não'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: const Text('Sim'),
-              ),
-            ],
-          ),
-        ) ??
-        false;
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+  
+  void _onPressResumeTimer() {
+    _controller.forward();
+  }  
 }
