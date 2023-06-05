@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
   const HomePage({
     super.key,
     this.id,
-    this.minutes,
+    this.minutes = 30,
   });
 
   @override
@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
   Codec<String, String> stringToBase64 = utf8.fuse(base64);
 
   List<String> people = [];
-  int minutes = 15;
+  int minutes = 30;
 
   @override
   void initState() {
